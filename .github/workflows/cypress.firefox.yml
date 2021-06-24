@@ -1,0 +1,12 @@
+name: E2E on Firefox
+on: [push]
+jobs:
+  cypress-run:
+    runs-on: ubuntu-20.04
+    # let's make sure our tests pass on Firefox browser
+    name: E2E on Firefox
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cypress-io/github-action@v2
+        with:
+          browser: firefox
