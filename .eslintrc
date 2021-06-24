@@ -1,9 +1,13 @@
 {
     "parser": "babel-eslint",
     "plugins": [
-      "react"
+      "react",
+      "cypress"
     ],
     "rules": {
       "no-undef": [ 1 ],
-    }
+    },
+    "extends": [
+          "plugin:cypress/recommended"
+        ]
   }
