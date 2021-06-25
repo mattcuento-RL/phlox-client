@@ -53,7 +53,7 @@ export default function CreateListing() {
 
   function createListing(listing) {
       console.log(listing)
-    return API.post("phlox", "/create", {
+    return API.post("phlox", "/listing", {
       body: listing
     });
   }
