@@ -44,7 +44,6 @@ export default function CreateListing() {
       const imageUrls = file.current ? await s3Upload(file.current) : null;
   
       await createListing({ title, category, description, policy, imageUrls });
-      history.push("/");
     } catch (e) {
       onError(e);
       setIsLoading(false);
