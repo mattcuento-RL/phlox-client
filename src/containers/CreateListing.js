@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { API } from "aws-amplify";
+import { s3Upload } from "../libs/awsLib";
+import config from "../config";
+import { onError } from "../libs/errorLib";
 import "./CreateListing.css";
 
 export default function CreateListing() {
@@ -8,15 +12,50 @@ export default function CreateListing() {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
-  const [rules, setRules] = useState("");
-  const [images, setImages] = useState([]);
+  const [policy, setPolicy] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const file = useRef(null);
+//   const [images, setImages] = useState([]);
 
   function validateForm() {
-    // return email.length > 0 && password.length > 0;
+    // return title.length > 0 && category.length > 0 && description.length > 0 && policy.length > 0 && images.length > 0;
+    return title.length > 0 && category.length > 0 && description.length > 0 && policy.length > 0 && file;
   }
 
-  function handleSubmit(event) {
+  function handleFileChange(event) {
+    file.current = event.target.files[0];
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault();
+  
+    if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
+      alert(
+        `Please pick a file smaller than ${
+          config.MAX_ATTACHMENT_SIZE / 1000000
+        } MB.`
+      );
+      return;
+    }
+  
+    setIsLoading(true);
+  
+    try {
+      const imageUrls = file.current ? await s3Upload(file.current) : null;
+  
+      await createListing({ title, category, description, policy, imageUrls });
+      history.push("/");
+    } catch (e) {
+      onError(e);
+      setIsLoading(false);
+    }
+  }
+
+  function createListing(listing) {
+      console.log(listing)
+    return API.post("phlox", "/create", {
+      body: listing
+    });
   }
 
   return (
@@ -51,20 +90,21 @@ export default function CreateListing() {
             onChange={(e) => setDescription(e.target.value)}
           />
         </Form.Group>
-        <Form.Group size="lg" controlId="rules">
-          <Form.Label>Rules</Form.Label>
+        <Form.Group size="lg" controlId="policy">
+          <Form.Label>Policy</Form.Label>
           <Form.Control
-            type="rules"
-            value={rules}
-            onChange={(e) => setRules(e.target.value)}
+            type="policy"
+            value={policy}
+            onChange={(e) => setPolicy(e.target.value)}
           />
         </Form.Group>
         <Form.Group size="lg" controlId="images">
           <Form.Label>Images</Form.Label>
           <Form.Control
-            multiple type="file"
-            value={images}
-            onChange={(e) => setImages(e.target.files)}
+            // multiple type="file"
+            // value={images}
+            onChange={handleFileChange} type = "file"
+            // onChange={(e) => setImages(e.target.files)}
           />
         </Form.Group>
         <Button block size="lg" type="submit" disabled={!validateForm()}>

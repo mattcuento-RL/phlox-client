@@ -28,9 +28,9 @@ export default function Routes() {
       <AuthenticatedRoute exact path="/notes/:id">
         <Notes />
       </AuthenticatedRoute>
-      <UnauthenticatedRoute exact path="/createlisting">
+      <AuthenticatedRoute exact path="/createlisting">
         <CreateListing />
-      </UnauthenticatedRoute>
+      </AuthenticatedRoute>
       <Route>
         <NotFound />
       </Route>

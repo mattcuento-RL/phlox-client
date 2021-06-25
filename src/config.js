@@ -1,5 +1,6 @@
 const config = {
     MAX_ATTACHMENT_SIZE: 5000000,
+    MAX_IMAGE_NUMBER: 5,
     s3: {
       REGION: "us-east-1",
       BUCKET: "phlox-upload",
