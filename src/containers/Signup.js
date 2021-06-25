@@ -1,16 +1,24 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { useHistory } from "react-router-dom";
 import LoaderButton from "../components/LoaderButton";
 import { useAppContext } from "../libs/contextLib";
 import { useFormFields } from "../libs/hooksLib";
 import { onError } from "../libs/errorLib";
+import { s3Upload } from "../libs/awsLib";
 import "./Signup.css";
 import { Auth } from "aws-amplify";
+import config from "../config";
+import PhoneInput from "react-phone-number-input";
+import 'react-phone-number-input/style.css'
 
 export default function Signup() {
+  const [value, setValue] = useState()
   const [fields, handleFieldChange] = useFormFields({
     email: "",
+    address: "",
+    firstName: "",
+    lastName: "",
     password: "",
     confirmPassword: "",
     confirmationCode: "",
@@ -22,14 +30,22 @@ export default function Signup() {
 
   function validateForm() {
     return (
-      fields.email.length > 0 &&
-      fields.password.length > 0 &&
-      fields.password === fields.confirmPassword
+      fields.email && fields.email.length > 0 &&
+      fields.address && fields.address.length > 0 &&
+      fields.firstName && fields.firstName.length > 0 &&
+      fields.lastName && fields.lastName.length > 0 &&
+      value && value.length > 0 &&
+      fields.password && fields.password.length > 0 &&
+      fields.confirmPassword && fields.password === fields.confirmPassword
     );
   }
 
   function validateConfirmationForm() {
     return fields.confirmationCode.length > 0;
+  }
+
+  function handleFileChange(event) {
+    file.current = event.target.files[0];
   }
 
   async function handleSubmit(event) {
@@ -41,6 +57,12 @@ export default function Signup() {
       const newUser = await Auth.signUp({
         username: fields.email,
         password: fields.password,
+        attributes: {
+          name: fields.firstName,
+          family_name: fields.lastName,
+          address: fields.address,
+          phone_number: value,
+        }
       });
       setIsLoading(false);
       setNewUser(newUser);
@@ -104,6 +126,39 @@ export default function Signup() {
             type="email"
             value={fields.email}
             onChange={handleFieldChange}
+          />
+        </Form.Group>
+        <Form.Group controlId="firstName" size="lg">
+        <Form.Label>First Name</Form.Label>
+          <Form.Control
+            type="firstName"
+            value={fields.firstName}
+            onChange={handleFieldChange}
+          />
+        </Form.Group>
+        <Form.Group controlId="lastName" size="lg">
+        <Form.Label>Last Name</Form.Label>
+          <Form.Control
+            type="lastName"
+            value={fields.lastName}
+            onChange={handleFieldChange}
+          />
+        </Form.Group>
+        <Form.Group controlId="address" size="lg">
+        <Form.Label>Address</Form.Label>
+          <Form.Control
+            type="address"
+            value={fields.address}
+            onChange={handleFieldChange}
+          />
+        </Form.Group>
+        <Form.Group controlId="value" size="lg">
+        <Form.Label>Phone Number</Form.Label>
+          <PhoneInput
+            defaultCountry="US"
+            placeholder="Enter phone number"
+            value={value}
+            onChange={setValue}
           />
         </Form.Group>
         <Form.Group controlId="password" size="lg">
