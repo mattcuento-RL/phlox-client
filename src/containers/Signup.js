@@ -44,10 +44,6 @@ export default function Signup() {
     return fields.confirmationCode.length > 0;
   }
 
-  function handleFileChange(event) {
-    file.current = event.target.files[0];
-  }
-
   async function handleSubmit(event) {
     event.preventDefault();
   
