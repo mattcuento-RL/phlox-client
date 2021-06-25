@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+import HomePage from "./containers/HomePage";
 import Home from "./containers/Home";
 import NotFound from "./containers/NotFound";
 import Login from "./containers/Login";
@@ -27,6 +28,9 @@ export default function Routes() {
       <AuthenticatedRoute exact path="/notes/:id">
         <Notes />
       </AuthenticatedRoute>
+      <Route exact path="/homepage">
+        <HomePage />
+      </Route>
       <Route>
         <NotFound />
       </Route>
