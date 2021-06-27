@@ -14,7 +14,8 @@ import '../components/SideBar.css'
 
 const Dash = props => {
    
-    const [notes, setNotes] = useState([]);
+    const [cards, setCards] = useState([]);
+    const [listings, setListings] = useState([]);
     const { isAuthenticated } = useAppContext(null);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -23,163 +24,86 @@ const Dash = props => {
       if (!isAuthenticated) {
         return;
       }
-  
-    //   try {
-    //     const notes = await loadNotes();
-    //     setNotes(notes);
-    //   } catch (e) {
-    //     onError(e);
-    //   }
-  
+      try {
+        const listings = await fetchListings();
+        setListings(listings);
+        // console.log(listings);
+        const cards = await loadCards(listings);
+        setCards(cards);
+        console.log(cards);
+      } catch (e) {
+        onError(e);
+      }
       setIsLoading(false);
     }
-  
     onLoad();
-  }, []);
-  function loadNotes() {
-    // return API.get("notes", "/notes");
+  }, [isAuthenticated]);
+
+  function fetchListings() {
+    return API.get("phlox", "/listings");
   }
 
-  function renderNotesList(notes) {
-    // return (
-    //   <>
-    //     <LinkContainer to="/notes/new">
-    //       <ListGroup.Item action className="py-3 text-nowrap text-truncate">
-    //         <BsPencilSquare size={17} />
-    //         <span className="ml-2 font-weight-bold">Create a new note</span>
-    //       </ListGroup.Item>
-    //     </LinkContainer>
-    //     {notes.map(({ noteId, content, createdAt }) => (
-    //       <LinkContainer key={noteId} to={`/notes/${noteId}`}>
-    //         <ListGroup.Item action>
-    //           <span className="font-weight-bold">
-    //             {content.trim().split("\n")[0]}
-    //           </span>
-    //           <br />
-    //           <span className="text-muted">
-    //             Created: {new Date(createdAt).toLocaleString()}
-    //           </span>
-    //         </ListGroup.Item>
-    //       </LinkContainer>
-    //     ))}
-    //   </>
-    // );
+  function loadCards(listings){
+    let listing_info= [];
+    listings.map((listing)=>{   
+        listing_info.push([listing.title,listing.listingId,listing.imageUrls]);
+    });   
+    return listing_info;
   }
+
 
 function renderLander() {
     return (
       <div className="lander">
         <h1>Phlox</h1>
-        <p className="text-muted">Enjoy Te Outdoors</p>
+        <p className="text-muted">Enjoy The Outdoors</p>
       </div>
     );
   }
 
-  function renderNotes() {
+  function renderDashboard() {
+
+    const items = cards.map(function(card){
+        return( 
+            <Card style={{ width: '26rem', height: 'min-content', margin: '.5rem' }}>
+            {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
+            <Card.Body>
+                <Card.Title style={{textAlign:'center'}}>{card[0]}</Card.Title>
+                <Card.Text>
+                imageURL: {card[1]}
+                </Card.Text>
+                <div class="text-center">
+                <Button variant="primary">listingID: {card[2]}</Button>
+                </div>
+            </Card.Body>
+            </Card>
+        )
+      });
     return (
-      <>
-    <Container fluid>
+        // <div>
+        <Container fluid>
 
-                <Row>
-                    <Col lg={2} id="sidebar-wrapper" style={{marginTop: '.5rem' }}>      
-                    <Sidebar />
-                    </Col>
-                    
-                    {/* <> */}
-                    <Col>
+            <Row>
+                <Col lg={2} id="sidebar-wrapper" style={{marginTop: '.5rem' }}>      
+                <Sidebar />
+                </Col>
+                <Col>
                     <Row>
-                        <Col>    
-                            <Card style={{ width: '26rem', height: 'min-content', margin: '.5rem' }}>
-                            {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
-                            <Card.Body>
-                                <Card.Title style={{textAlign:'center'}}>Card Title</Card.Title>
-                                <Card.Text>
-                                Some quick example text to build on the card title and make up the bulk of
-                                the card's content. This is dummy text for when we actually have stuff to populate
-                                with our tables!
-                                </Card.Text>
-                                <div class="text-center">
-                                <Button variant="primary">Go somewhere</Button>
-                                </div>
-                            </Card.Body>
-                            </Card>
-                        </Col>
-                        <Col>    
-                            <Card style={{ width: '26rem', height: 'min-content', margin: '.5rem' }}>
-                            {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
-                            <Card.Body>
-                                <Card.Title style={{textAlign:'center'}}>Card Title</Card.Title>
-                                <Card.Text>
-                                Some quick example text to build on the card title and make up the bulk of
-                                the card's content. This is dummy text for when we actually have stuff to populate
-                                with our tables!
-                                </Card.Text>
-                                <div class="text-center">
-                                <Button variant="primary">Go somewhere</Button>
-                                </div>
-                            </Card.Body>
-                            </Card>
-                        </Col>
-                        <Col>    
-                            <Card style={{ width: '26rem', height: 'min-content', margin: '.5rem' }}>
-                            {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
-                            <Card.Body>
-                                <Card.Title style={{textAlign:'center'}}>Card Title</Card.Title>
-                                <Card.Text>
-                                Some quick example text to build on the card title and make up the bulk of
-                                the card's content. This is dummy text for when we actually have stuff to populate
-                                with our tables!
-                                </Card.Text>
-                                <div class="text-center">
-                                <Button variant="primary">Go somewhere</Button>
-                                </div>
-                            </Card.Body>
-                            </Card>
-                        </Col>
-                        <Col>    
-                            <Card style={{ width: '26rem', height: 'min-content', margin: '.5rem' }}>
-                            {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
-                            <Card.Body>
-                                <Card.Title style={{textAlign:'center'}}>Card Title</Card.Title>
-                                <Card.Text>
-                                Some quick example text to build on the card title and make up the bulk of
-                                the card's content. This is dummy text for when we actually have stuff to populate
-                                with our tables!
-                                </Card.Text>
-                                <div class="text-center">
-                                <Button variant="primary">Go somewhere</Button>
-                                </div>
-                            </Card.Body>
-                            </Card>
-                        </Col>
-                        <Col>    
-                            <Card style={{ width: '26rem', height: 'min-content', margin: '.5rem' }}>
-                            {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
-                            <Card.Body>
-                                <Card.Title style={{textAlign:'center'}}>Card Title</Card.Title>
-                                <Card.Text>
-                                Some quick example text to build on the card title and make up the bulk of
-                                the card's content. This is dummy text for when we actually have stuff to populate
-                                with our tables!
-                                </Card.Text>
-                                <div class="text-center">
-                                <Button variant="primary">Go somewhere</Button>
-                                </div>
-                            </Card.Body>
-                            </Card>
-                        </Col>
+                        {/* <div> */}
+                            {items}
+                     
+                    {/* </div> */}
                     </Row>
-                    </Col>
-                </Row>
+                </Col>
+            </Row>
+        </Container>
 
-            </Container>
-        </>
     );
   }
 
     return (
         <div className="Home">
-            {isAuthenticated ? renderNotes() : renderLander()}
+            {isAuthenticated ? renderDashboard() : renderLander()}
         </div> 
         );
   };
