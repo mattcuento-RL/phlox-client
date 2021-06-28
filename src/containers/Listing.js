@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { onError } from '../libs/errorLib';
 import { API, Auth } from 'aws-amplify';
 import { useParams, useHistory } from "react-router-dom";
-import { Container, Image, Form, Button } from 'react-bootstrap'; 
+import {Container,Image, Row, Col, Card, Form, Button,CardColumns } from "react-bootstrap";
 import { Storage } from 'aws-amplify';
+import Sidebar from "../components/SideBar.js";
+import '../components/SideBar.css';
+
 
 export default function Listing() {
     const history = useHistory();
@@ -112,6 +115,11 @@ export default function Listing() {
     return (
         listing && (
             <Container>
+                <Row>
+                <Col lg={2} id="sidebar-wrapper" style={{marginTop: '.5rem' }}>      
+                   <Sidebar />
+                </Col>
+                <Col>
                 <h1>{ title }</h1>
                 <p><b>Description: </b>{ description }</p>
                 <p><b>Category: </b>{ category }</p>
@@ -147,7 +155,10 @@ export default function Listing() {
                         Rent
                     </Button>
                   </Form>}
+                </Col>
+                  </Row>
             </Container>
         )
     );
 }
+
