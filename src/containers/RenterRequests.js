@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
-import { API } from 'aws-amplify';
+import { API } from "aws-amplify";
 import "./RenterRequests.css";
 import RequestRow from "../components/RequestRow";
+// const rows = []
 
 export default function RenterRequests() {
   const [requests, setRequests] = useState([]);
   
   useEffect(() => {
     async function getRequests() {
-      return await API.get('phlox', '/lender-requests');
+      return API.get('phlox', '/lender-requests');
     }
 
 
@@ -19,7 +20,7 @@ export default function RenterRequests() {
         setRequests(requestList);
         console.log(requests);
       } catch (e) {
-        console.alert(e);
+        // console.alert(e);
       }
     }
 
@@ -34,7 +35,7 @@ export default function RenterRequests() {
         <Table responsive>
             <thead>
                 <tr>
-                <th>Title (listing id for now)</th>
+                <th>Title</th>
                 <th>Renter</th>
                 <th>Start Date</th>
                 <th>End Date</th>
@@ -45,12 +46,9 @@ export default function RenterRequests() {
                 </tr>
             </thead>
             <tbody>
-
-                {/* const rows = []
-                requests.forEach(request => {
-                  rows.append(<RequestRow request={request}>)
-                });
-
+                {/* {requests.forEach(request => {
+                  rows.push(<RequestRow request={request}/>)
+                })};
                 {
                   rows
                 } */}
