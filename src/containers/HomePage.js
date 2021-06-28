@@ -78,7 +78,7 @@ function renderLander() {
                 <Card.Title style={{textAlign:'center'}}>{card[0]}</Card.Title>
                 <Card.Img variant="top" src={card[2]} />
                 <div class="text-center">
-                <Button href={"/listing/"+ card[1]} variant="primary">listingID: {card[1]}</Button>
+                <Button href={"/listing/"+ card[1]} variant="primary">View Details</Button>
                 </div>
             </Card.Body>
             </Card>
