@@ -30,7 +30,7 @@ const Dash = props => {
         // console.log(listings);
         const cards = await loadCards(listings);
         setCards(cards);
-        console.log(cards);
+        // console.log(cards);
       } catch (e) {
         onError(e);
       }
@@ -70,17 +70,17 @@ function renderLander() {
             <Card.Body>
                 <Card.Title style={{textAlign:'center'}}>{card[0]}</Card.Title>
                 <Card.Text>
-                imageURL: {card[1]}
+                imageURL: {card[2]}
                 </Card.Text>
                 <div class="text-center">
-                <Button variant="primary">listingID: {card[2]}</Button>
+                <Button variant="primary">listingID: {card[1]}</Button>
                 </div>
             </Card.Body>
             </Card>
         )
       });
+
     return (
-        // <div>
         <Container fluid>
 
             <Row>
@@ -89,10 +89,7 @@ function renderLander() {
                 </Col>
                 <Col>
                     <Row>
-                        {/* <div> */}
-                            {items}
-                     
-                    {/* </div> */}
+                      {items}                     
                     </Row>
                 </Col>
             </Row>
