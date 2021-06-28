@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import { API } from "aws-amplify";
+import { onError } from "../libs/errorLib";
 
 var STATUS = {
 0 : 'PENDING', 
@@ -19,24 +20,38 @@ async function fetchRequesterName(userId){
 }
 
 export default function RequestRow({request}) {
-    function approve(){
-        updateListing(0);
+    async function approve(){
+        try{
+            await updateListing(0);
+            alert("successfully updated status")
+        }catch(e){
+            onError(e)
+        }
     }
     
-    function deny(){
-        updateListing(1);
+    async function deny(){
+        try{
+            await updateListing(1);
+            alert("successfully updated status")
+        }catch(e){
+            onError(e)
+        }
+        
     }
     
-    function cancel(){
-        updateListing(3);
+    async function cancel(){
+        try{
+            await updateListing(3);
+            alert("successfully updated status")
+        }catch(e){
+            onError(e)
+        }
     }
     
-    function updateListing(status, archived = true){
-        return API.update('phlox', `/request/${request.requestId}`);
-    }
-    
-    function viewListing(e){
-        //
+    function updateListing(requestStatus, archived = true){
+        return API.put('phlox', `/request/${request.requestId}`, {
+            body: {requestStatus, archived}
+        })
     }
 
     console.log(fetchRequestTitle(request.listingId))
@@ -49,13 +64,13 @@ export default function RequestRow({request}) {
     <td>{ request.startDate }</td>
     <td> { request.endDate }</td>
     <td>{ request.rate } </td>
-    <td> { STATUS[request.status] }</td>
+    <td> { STATUS[request.requestStatus] }</td>
     <td> { request.comment }</td>
     <td>
-        <Button onClick={approve} variant="outline-primary" size="sm" disabled = { STATUS[request.status] == 'DENIED' || STATUS[request.status] == 'CANCELED' }>Approve</Button> 
-        <Button onClick={deny} variant="outline-primary" size="sm" disabled = { STATUS[request.status] == 'APPROVED' || STATUS[request.status] == 'CANCELED' }>Deny</Button>
-        <Button onClick={cancel} variant="outline-primary" size="sm" disabled = { STATUS[request.status] == 'PENDING' }>Cancel</Button>
-        <Button onClick={viewListing} variant="outline-primary" size="sm">View Listing</Button>
+        <Button onClick={approve} variant="outline-primary" size="sm" disabled = { STATUS[request.requestStatus] == 'DENIED' || STATUS[request.requestStatus] == 'CANCELED' }>Approve</Button> 
+        <Button onClick={deny} variant="outline-primary" size="sm" disabled = { STATUS[request.requestStatus] == 'APPROVED' || STATUS[request.requestStatus] == 'CANCELED' }>Deny</Button>
+        <Button onClick={cancel} variant="outline-primary" size="sm" disabled = { STATUS[request.requestStatus] == 'PENDING' }>Cancel</Button>
+        <Button href={"/listing/"+ request.listingId} variant="outline-primary" size="sm">View Listing</Button>
     </td>
     </tr>
    )
