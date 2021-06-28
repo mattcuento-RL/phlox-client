@@ -39,9 +39,9 @@ export default function CreateListing() {
     setIsLoading(true);
   
     try {
-      const imageUrls = file.current ? await s3Upload(file.current) : null;
+      const imageUrl = file.current ? await s3Upload(file.current) : null;
   
-      await createListing({ title, category, description, policy, imageUrls });
+      await createListing({ title, category, description, policy, imageUrl });
     } catch (e) {
       onError(e);
       setIsLoading(false);

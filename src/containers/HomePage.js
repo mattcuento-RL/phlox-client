@@ -49,7 +49,7 @@ const Dash = props => {
     let listing_info= [];
   
     var res = await Promise.all(listings.map((listing)=> {
-        return loadImage(listing.imageUrls);
+        return loadImage(listing.imageUrl);
     }))
 
     listings.map((listing,i)=>{   
