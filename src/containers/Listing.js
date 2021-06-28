@@ -124,7 +124,9 @@ export default function Listing() {
                 <p><b>Description: </b>{ description }</p>
                 <p><b>Category: </b>{ category }</p>
                 <p><b>Policies: </b>{ policy }</p>
+                <div style={{textAlign:'center'}}>
                 <Image src={imageUrl} fluid/>
+                </div>
                 { author ? <Button block size="lg" type="button" onClick={removeListing}>Remove Listing</Button> : 
                     <Form onSubmit={handleSubmit}>
                     <Form.Group size="lg" controlId="startDate">
