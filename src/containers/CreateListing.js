@@ -43,6 +43,7 @@ export default function CreateListing() {
       const imageUrl = file.current ? await s3Upload(file.current) : null;
   
       await createListing({ title, category, description, policy, imageUrl });
+      alert('New listing created!');
     } catch (e) {
       onError(e);
       setIsLoading(false);
@@ -50,7 +51,6 @@ export default function CreateListing() {
   }
 
   function createListing(listing) {
-      console.log(listing)
     return API.post("phlox", "/listing", {
       body: listing
     });
