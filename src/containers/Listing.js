@@ -62,7 +62,7 @@ export default function Listing() {
         event.preventDefault();
       
         try {      
-          await createRequest({ listingId, listingAuthorId: userId, rate: 0, archived: false, startDate, endDate, status: 0, comment});
+          await createRequest({ listingId, listingAuthorId: userId, rate: 0, archived: false, startDate, endDate, comment});
           alert('Request created!');
         } catch (e) {
           onError(e);
