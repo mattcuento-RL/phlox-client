@@ -15,10 +15,8 @@ export default function CreateListing() {
   const [policy, setPolicy] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const file = useRef(null);
-//   const [images, setImages] = useState([]);
 
   function validateForm() {
-    // return title.length > 0 && category.length > 0 && description.length > 0 && policy.length > 0 && images.length > 0;
     return title.length > 0 && category.length > 0 && description.length > 0 && policy.length > 0 && file;
   }
 
