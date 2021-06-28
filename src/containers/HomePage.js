@@ -9,8 +9,8 @@ import { LinkContainer } from "react-router-bootstrap";
 import {Container, Row, Col, Card, Form, Button,CardColumns } from "react-bootstrap";
 import { withRouter } from "react-router";
 import Sidebar from "../components/SideBar.js";
-import '../components/SideBar.css'
-
+import '../components/SideBar.css';
+import {Storage} from "aws-amplify";
 
 const Dash = props => {
    
@@ -26,11 +26,9 @@ const Dash = props => {
       }
       try {
         const listings = await fetchListings();
-        setListings(listings);
-        // console.log(listings);
         const cards = await loadCards(listings);
+        setListings(listings)
         setCards(cards);
-        // console.log(cards);
       } catch (e) {
         onError(e);
       }
@@ -43,11 +41,21 @@ const Dash = props => {
     return API.get("phlox", "/listings");
   }
 
-  function loadCards(listings){
+  function loadImage(url){
+    return Storage.get(url);
+  }
+
+  async function loadCards(listings){
     let listing_info= [];
-    listings.map((listing)=>{   
-        listing_info.push([listing.title,listing.listingId,listing.imageUrls]);
-    });   
+  
+    var res = await Promise.all(listings.map((listing)=> {
+        return loadImage(listing.imageUrls);
+    }))
+
+    listings.map((listing,i)=>{   
+        listing_info.push([listing.title,listing.listingId,res[i]]);
+    });  
+
     return listing_info;
   }
 
@@ -66,12 +74,9 @@ function renderLander() {
     const items = cards.map(function(card){
         return( 
             <Card style={{ width: '26rem', height: 'min-content', margin: '.5rem' }}>
-            {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
             <Card.Body>
                 <Card.Title style={{textAlign:'center'}}>{card[0]}</Card.Title>
-                <Card.Text>
-                imageURL: {card[2]}
-                </Card.Text>
+                <Card.Img variant="top" src={card[2]} />
                 <div class="text-center">
                 <Button variant="primary">listingID: {card[1]}</Button>
                 </div>
@@ -82,7 +87,6 @@ function renderLander() {
 
     return (
         <Container fluid>
-
             <Row>
                 <Col lg={2} id="sidebar-wrapper" style={{marginTop: '.5rem' }}>      
                 <Sidebar />
@@ -106,4 +110,3 @@ function renderLander() {
   };
   const Dashboard = withRouter(Dash);
   export default Dashboard
-
