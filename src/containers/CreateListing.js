@@ -1,11 +1,12 @@
 import React, { useRef, useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import {Container, Row, Col, Card, Form, Button,CardColumns } from "react-bootstrap";
 import { API } from "aws-amplify";
 import { s3Upload } from "../libs/awsLib";
 import config from "../config";
 import { onError } from "../libs/errorLib";
 import "./CreateListing.css";
+import Sidebar from "../components/SideBar.js";
+import '../components/SideBar.css';
 
 export default function CreateListing() {
         
@@ -56,6 +57,12 @@ export default function CreateListing() {
   }
 
   return (
+    <Container>
+      <Row>
+      <Col lg={2} id="sidebar-wrapper" style={{marginTop: '.5rem' }}>      
+                <Sidebar />
+      </Col>
+      <Col>
     <div className="CreateListing">
       <div className="lander">
         <h1>Create Listing</h1>
@@ -109,5 +116,8 @@ export default function CreateListing() {
         </Button>
       </Form>
     </div>
+    </Col>
+    </Row>
+    </Container>
   );
 }
