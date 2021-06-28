@@ -23,7 +23,10 @@ const Side = props => {
 
             <div className="title">Lender</div>
             <Nav.Item>
-                <Nav.Link href="/login">Listings</Nav.Link>
+                <Nav.Link href="/createlisting">Create Listing</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+                <Nav.Link href="/login">View Listings</Nav.Link>
             </Nav.Item>
             <Nav.Item>
                 <Nav.Link href="/login">Incoming Requests</Nav.Link>
