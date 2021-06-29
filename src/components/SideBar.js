@@ -11,22 +11,23 @@ const Side = props => {
             <Nav 
             className="col-md-12 d-none d-md-block bg-light sidebar-wrapper"
             activeKey="/home"
+            style={{textAlign: 'center', fontSize: '17.5px'}}
             >
             <div className="sidebar-sticky"></div>
             <div className="title">Renter</div>
             <Nav.Item>
-                <Nav.Link href="/renterreservations">Reservations</Nav.Link>
+                <Nav.Link href="/renterreservations">Upcoming Reservations</Nav.Link>
             </Nav.Item>
             <Nav.Item>
                 <Nav.Link href="/renterrequests">Requests</Nav.Link>
             </Nav.Item>
-
+            
             <div className="title">Lender</div>
             <Nav.Item>
                 <Nav.Link href="/createlisting">Create Listing</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link href="/lenderlistings">View Listings</Nav.Link>
+                <Nav.Link href="/lenderlistings">My Listings</Nav.Link>
             </Nav.Item>
             <Nav.Item>
                 <Nav.Link href="/lenderrequests">Incoming Requests</Nav.Link>
