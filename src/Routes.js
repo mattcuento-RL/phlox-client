@@ -10,6 +10,7 @@ import Listing from "./containers/Listing";
 import CreateListing from "./containers/CreateListing";
 import RenterRequests from "./containers/RenterRequests";
 import MyRequests from "./containers/MyRequests";
+import MyReservations from "./containers/MyReservations";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 
@@ -42,6 +43,9 @@ export default function Routes() {
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/myrequests">
         <MyRequests />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/myreservations">
+        <MyReservations />
       </AuthenticatedRoute>
       <Route>
         <NotFound />

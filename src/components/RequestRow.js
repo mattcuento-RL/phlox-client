@@ -54,7 +54,7 @@ export default function RequestRow({request}) {
         })
     }
 
-    console.log(fetchRequestTitle(request.listingId))
+    // console.log(fetchRequestTitle(request.listingId))
     // console.log(fetchRequesterName(request.userId))
   return (
     <tr>
