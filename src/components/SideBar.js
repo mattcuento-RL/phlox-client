@@ -14,7 +14,7 @@ const Side = props => {
             style={{textAlign: 'center', fontSize: '17.5px'}}
             >
             <div className="sidebar-sticky"></div>
-            <div className="title">Renter</div>
+            <div className="title">Renting</div>
             <Nav.Item>
                 <Nav.Link href="/renterreservations">My Reservations</Nav.Link>
             </Nav.Item>
@@ -22,7 +22,7 @@ const Side = props => {
                 <Nav.Link href="/renterrequests">My Requests</Nav.Link>
             </Nav.Item>
             
-            <div className="title">Lender</div>
+            <div className="title">Lending</div>
             <Nav.Item>
                 <Nav.Link href="/createlisting">Create Listing</Nav.Link>
             </Nav.Item>
