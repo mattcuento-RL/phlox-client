@@ -51,21 +51,24 @@ export default function LenderViewRequestRow({request}) {
     }
 
     // console.log(fetchRequestTitle(request.listingId))
-    // console.log(fetchRequesterName(request.userId))
   return (
     <tr>
     <td> { request[1] }</td>
-    <td> { request[0].userId } </td>
+    <td> { request[0].firstName && request[0].lastName ? `${request[0].firstName} ${request[0].lastName}` : "N/a" } </td>
+    <td> { request[0].phoneNumber} </td>
     <td>{ request[0].startDate }</td>
     <td> { request[0].endDate }</td>
-    <td>{ request[0].rate } </td>
     <td> { STATUS[request[0].requestStatus] }</td>
     <td> { request[0].comment }</td>
     <td>
-        <Button onClick={approve} variant="outline-primary" size="sm" disabled = { STATUS[request[0].requestStatus] != 'PENDING' }>Approve</Button> 
-        <Button onClick={deny} variant="outline-primary" size="sm" disabled = { STATUS[request[0].requestStatus] != 'PENDING' }>Deny</Button>
-        <Button onClick={cancel} variant="outline-primary" size="sm" disabled = { STATUS[request[0].requestStatus] == 'PENDING' || STATUS[request[0].requestStatus] == 'CANCELED' }>Cancel</Button>
-        <Button href={"/listing/"+ request[0].listingId} variant="outline-primary" size="sm">View Listing</Button>
+        <Button className="p-1" onClick={approve} variant="outline-primary" size="sm" disabled = { STATUS[request[0].requestStatus] != 'PENDING' }>Approve</Button> 
+        <Button className="p-1" onClick={deny} variant="outline-primary" size="sm" disabled = { STATUS[request[0].requestStatus] != 'PENDING' }>Deny</Button>
+        <Button className="p-1" onClick={cancel} variant="outline-primary" size="sm" disabled = { STATUS[request[0].requestStatus] == 'PENDING' || STATUS[request[0].requestStatus] == 'CANCELED' }>Cancel</Button>
+        {
+            STATUS[request[0].requestStatus] == 'CANCELED' ? <></> :
+            <Button className="p-1" href={"/listing/"+ request[0].listingId} variant="outline-primary" size="sm">View</Button>
+
+        }
     </td>
     </tr>
    )

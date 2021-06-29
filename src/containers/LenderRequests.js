@@ -65,9 +65,9 @@ export default function LenderRequests() {
                             <tr>
                             <th>Title</th>
                             <th>Renter</th>
+                            <th>Phone</th>
                             <th>Start Date</th>
                             <th>End Date</th>
-                            <th>Rate</th>
                             <th>Status</th>
                             <th>Comments</th>
                             <th>Actions</th>
