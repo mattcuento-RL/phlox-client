@@ -15,15 +15,11 @@ async function fetchRequestTitle(listingId){
     return req.title;
 }
 
-async function fetchRequesterName(userId){
-
-}
-
 export default function LenderViewRequestRow({request}) {
+
     async function approve(){
         try{
             await updateListing(1);
-            alert("successfully updated status")
         }catch(e){
             onError(e)
         }
@@ -32,7 +28,6 @@ export default function LenderViewRequestRow({request}) {
     async function deny(){
         try{
             await updateListing(2);
-            alert("successfully updated status")
         }catch(e){
             onError(e)
         }
@@ -42,16 +37,17 @@ export default function LenderViewRequestRow({request}) {
     async function cancel(){
         try{
             await updateListing(3);
-            alert("successfully updated status")
         }catch(e){
             onError(e)
         }
     }
     
-    function updateListing(requestStatus, archived = true){
-        return API.put('phlox', `/request/${request[0].requestId}`, {
+    async function updateListing(requestStatus, archived = true){
+        await API.put('phlox', `/request/${request[0].requestId}`, {
             body: {requestStatus, userId: request[0].userId, archived}
-        })
+        });
+
+        window.location.reload();
     }
 
     // console.log(fetchRequestTitle(request.listingId))

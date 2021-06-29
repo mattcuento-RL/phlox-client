@@ -8,6 +8,7 @@ import { onError } from "../libs/errorLib";
 import "./CreateListing.css";
 import Sidebar from "../components/SideBar.js";
 import '../components/SideBar.css';
+import LoaderButton from "../components/LoaderButton";
 
 const categories = ["SKIING", "SNOWBOARDING", "GOLF", "CLIMBING", "CYCLING", "MOUNTAIN_BIKING", "RUNNING", "WAKEBOARDING", "WATER_SKIING", "RACKET_SPORTS", "OTHER"];
 
@@ -47,11 +48,11 @@ export default function CreateListing() {
       const imageUrl = file.current ? await s3Upload(file.current) : null;
   
       const { attributes } = (await Auth.currentUserInfo());
-      await createListing({ title, category, description, policy, imageUrl, 
+      const { listingId } = await createListing({ title, category, description, policy, imageUrl, 
         address: attributes.address, phoneNumber: attributes.phone_number, 
         firstName: attributes.name, lastName: attributes.family_name });
-      alert('New listing created!');
-      history.push("/lenderlistings");
+      setIsLoading(false);
+      history.push(`/listing/${listingId}`);
     } catch (e) {
       onError(e);
       setIsLoading(false);
@@ -97,6 +98,7 @@ export default function CreateListing() {
             <option>Mountain Biking</option>
             <option>Running</option>
             <option>Water Sports</option>
+            <option>Racket Sports</option>
             <option>Other</option>
           </Form.Control>
         </Form.Group>
@@ -125,9 +127,9 @@ export default function CreateListing() {
             // onChange={(e) => setImages(e.target.files)}
           />
         </Form.Group>
-        <Button block size="lg" type="submit" disabled={!validateForm()}>
+        <LoaderButton block size="lg" type="submit" isLoading={isLoading} disabled={!validateForm()}>
           Publish Listing
-        </Button>
+        </LoaderButton>
       </Form>
     </div>
     </Col>
