@@ -68,11 +68,10 @@ export default function RenterRequests() {
               <Table responsive>
                   <thead>
                       <tr>
-                      <th>Title</th>
+                      <th>Item</th>
                       <th>Lender</th>
                       <th>Start Date</th>
                       <th>End Date</th>
-                      {/* <th>Rate</th> */}
                       <th>Status</th>
                       <th>Comments</th>
                       <th>Actions</th>

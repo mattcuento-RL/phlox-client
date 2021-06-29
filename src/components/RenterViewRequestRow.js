@@ -20,7 +20,6 @@ export default function RenterViewRequestRow({request}) {
     <td> { request[1][1] + " " + request[1][2]} </td>
     <td>{ request[0].startDate }</td>
     <td> { request[0].endDate }</td>
-    {/* <td>{ request[1][3]} </td> */}
     <td> { STATUS[request[0].requestStatus] }</td>
     <td> { request[0].comment }</td>
     <td>
