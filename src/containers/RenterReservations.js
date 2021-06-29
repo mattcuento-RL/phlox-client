@@ -15,10 +15,10 @@ export default function RenterReservations() {
     async function getRequests() {
       return API.get('phlox', '/renter-requests');
     }
-
+    
     async function fetchTitle(listingId){
       let req = await API.get("phlox", `/listing/${listingId}`)
-      return req.title;
+      return [req.title, req.firstName, req.lastName, req.phoneNumber];
     }
 
     async function fetchRequestTitle(reqs){
