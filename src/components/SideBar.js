@@ -26,7 +26,7 @@ const Side = props => {
                 <Nav.Link href="/createlisting">Create Listing</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link href="/lenderlistings">View Listings</Nav.Link>
+                <Nav.Link href="/lenderlistings">My Listings</Nav.Link>
             </Nav.Item>
             <Nav.Item>
                 <Nav.Link href="/lenderrequests">Incoming Requests</Nav.Link>

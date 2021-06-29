@@ -13,14 +13,14 @@ var STATUS = {
 
 
 export default function RenterViewRequestRow({request}) {
-
+  console.log(request);
   return (
     <tr>
-    <td> { request[1]}</td>
-    <td> { request[0].listingAuthorId } </td>
+    <td> { request[1][0]}</td>
+    <td> { request[1][1] + " " + request[1][2]} </td>
     <td>{ request[0].startDate }</td>
     <td> { request[0].endDate }</td>
-    <td>{ request[0].rate } </td>
+    {/* <td>{ request[1][3]} </td> */}
     <td> { STATUS[request[0].requestStatus] }</td>
     <td> { request[0].comment }</td>
     <td>
