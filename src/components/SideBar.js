@@ -11,6 +11,7 @@ const Side = props => {
             <Nav 
             className="col-md-12 d-none d-md-block bg-light sidebar-wrapper"
             activeKey="/home"
+            style={{textAlign: 'center', fontSize: '17.5px'}}
             >
             <div className="sidebar-sticky"></div>
             <div className="title">Renter</div>
@@ -20,7 +21,7 @@ const Side = props => {
             <Nav.Item>
                 <Nav.Link href="/renterrequests">Requests</Nav.Link>
             </Nav.Item>
-
+            
             <div className="title">Lender</div>
             <Nav.Item>
                 <Nav.Link href="/createlisting">Create Listing</Nav.Link>
