@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useHistory } from 'react-router-dom';
 import {Container, Row, Col, Card, Form, Button,CardColumns } from "react-bootstrap";
-import { API } from "aws-amplify";
+import { API, Auth } from "aws-amplify";
 import { s3Upload } from "../libs/awsLib";
 import config from "../config";
 import { onError } from "../libs/errorLib";
@@ -46,7 +46,10 @@ export default function CreateListing() {
     try {
       const imageUrl = file.current ? await s3Upload(file.current) : null;
   
-      await createListing({ title, category, description, policy, imageUrl });
+      const { attributes } = (await Auth.currentUserInfo());
+      await createListing({ title, category, description, policy, imageUrl, 
+        address: attributes.address, phoneNumber: attributes.phone_number, 
+        firstName: attributes.name, lastName: attributes.family_name });
       alert('New listing created!');
       history.push("/lenderlistings");
     } catch (e) {
@@ -85,11 +88,17 @@ export default function CreateListing() {
         </Form.Group>
         <Form.Group size="lg" controlId="category">
           <Form.Label>Category</Form.Label>
-          <Form.Control
-            type="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          />
+          <Form.Control as="select" value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option>Skiing</option>
+            <option>Snowboarding</option>
+            <option>Golf</option>
+            <option>Climbing</option>
+            <option>Cycling</option>
+            <option>Mountain Biking</option>
+            <option>Running</option>
+            <option>Water Sports</option>
+            <option>Other</option>
+          </Form.Control>
         </Form.Group>
         <Form.Group size="lg" controlId="description">
           <Form.Label>Description</Form.Label>

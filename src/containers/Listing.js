@@ -20,7 +20,6 @@ export default function Listing() {
     const [listingId, setListingId] = useState(null);
     const [userId, setUserId] = useState("N/a");
     const [category, setCategory] = useState("N/a");
-    const [author, setAuthor] = useState(false);
     const tomorrow = new Date()
     tomorrow.setDate(tomorrow.getDate() + 1)
     const [startDate, setstartDate] = useState(tomorrow.toISOString().substring(0, 10));
@@ -28,6 +27,10 @@ export default function Listing() {
     tomorrow.setDate(tomorrow.getDate() + 1)
     const [endDate, setendDate] = useState(tomorrow.toISOString().substring(0, 10))
     const { id } = useParams();
+    const [author, setAuthor] = useState("N/a");
+    const [authorId, setAuthorId] = useState(false);
+    const [address, setAddress] = useState("N/a");
+    const [phoneNumber, setPhoneNumber] = useState("N/a");
     const [currentReservations, setCurrentReservations] = useState([]);
     const [valid, setValid] = useState(true);
 
@@ -60,7 +63,9 @@ export default function Listing() {
         event.preventDefault();
       
         try {      
-          await createRequest({ listingId, listingAuthorId: userId, rate: 0, archived: false, startDate, endDate, comment});
+          const { attributes } = (await Auth.currentUserInfo());
+          await createRequest({ listingId, listingAuthorId: userId, rate: 0, archived: false, startDate, endDate, comment, phoneNumber: attributes.phone_number, 
+            firstName: attributes.name, lastName: attributes.family_name});
           alert('Request created!');
           history.push('/renterrequests');
         } catch (e) {
@@ -95,7 +100,7 @@ export default function Listing() {
         async function onLoad() {
           try {
             const listing = await loadListing();
-            const { title, description, policy, imageUrl, listingId, userId, category, createdAt } = listing;    
+            const { title, description, policy, imageUrl, listingId, userId, category, firstName, lastName, address, phoneNumber } = listing;    
             
             setListing(listing);
             setTitle(title);
@@ -106,9 +111,10 @@ export default function Listing() {
             setCategory(category);
 
             setImageUrl(await loadImage(imageUrl));
-
-            setAuthor(userId === await loadCognitoId());
-
+            setAuthor(`${firstName} ${lastName}`);
+            setAddress(address);
+            setPhoneNumber(phoneNumber);
+            setAuthorId(userId === await loadCognitoId());
             const reservations = await loadReservations(listingId);
             setCurrentReservations(reservations);
           } catch (e) {
@@ -129,13 +135,22 @@ export default function Listing() {
                 </Col>
                 <Col>
                 <h1>{ title }</h1>
-                <p><b>Description: </b>{ description }</p>
-                <p><b>Category: </b>{ category }</p>
-                <p><b>Policies: </b>{ policy }</p>
+                <Row>
+                    <Col>
+                        <p><b>Description: </b>{ description }</p>
+                        <p><b>Category: </b>{ category }</p>
+                        <p><b>Policies: </b>{ policy }</p>
+                    </Col>
+                    <Col>
+                        <p><b>Author: </b>{ author }</p>
+                        <p><b>Phone Number: </b>{ phoneNumber }</p>
+                        <p><b>Address: </b>{ address }</p>
+                    </Col>
+                </Row>
                 <div style={{textAlign:'center'}}>
                 <Image src={imageUrl} fluid/>
                 </div>
-                { author ? <Button block size="lg" type="button" onClick={removeListing}>Remove Listing</Button> : 
+                { authorId ? <Button block size="lg" type="button" onClick={removeListing}>Remove Listing</Button> : 
                     <Form onSubmit={handleSubmit}>
                     { !valid ? <Alert variant="warning">The requested date range collides with existing reservations.</Alert> : <></> }
                     <Form.Group size="lg" controlId="startDate">
