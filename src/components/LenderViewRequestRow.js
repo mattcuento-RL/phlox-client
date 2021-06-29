@@ -19,7 +19,7 @@ async function fetchRequesterName(userId){
 
 }
 
-export default function RequestRow({request}) {
+export default function LenderViewRequestRow({request}) {
     async function approve(){
         try{
             await updateListing(1);

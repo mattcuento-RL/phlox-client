@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { API } from "aws-amplify";
-import "./MyRequests.css";
+import "./RenterRequests.css";
 import RenterViewRequestRow from "../components/RenterViewRequestRow";
-//Renter Requests
+// const rows = []
 
-export default function MyRequests() {
+export default function RenterReservations() {
   const [requests, setRequests] = useState([]);
+  const [titles, setTitles] = useState([]);
   
   useEffect(() => {
     async function getRequests() {
       return API.get('phlox', '/renter-requests');
     }
-
 
     async function fetchTitle(listingId){
       let req = await API.get("phlox", `/listing/${listingId}`)
@@ -29,33 +29,32 @@ export default function MyRequests() {
       reqs.map((req,i)=>{   
           listing_info.push([req,res[i]]);
       });  
-      // console.log(listing_info);
       return listing_info;
     }
 
+
     async function onLoad() {
       try {
-        // const requestList = await getRequests();
-        // // requests = requestList;
-        // console.log(requestList);
-        // setRequests(requestList);
-
         const requestList = await getRequests();
-        console.log(requestList);
         const info = await fetchRequestTitle(requestList);
+        console.log(info);
         setRequests(info);
       } catch (e) {
-        // console.alert(e);
+        console.alert(e);
       }
     }
 
     onLoad();
   }, []);
 
+
+
+
+
   return (
-    <div className="MyRequests">
+    <div className="RenterRequests">
       <div className="lander">
-        <h1>My Requests</h1>
+        <h1>Renter Reservations</h1>
 
         <Table responsive>
             <thead>
@@ -71,16 +70,12 @@ export default function MyRequests() {
                 </tr>
             </thead>
             <tbody>
-                {/* {requests.forEach(request => {
-                  rows.push(<RequestRow request={request}/>)
-                })};
-                {
-                  rows
-                } */}
 
-                {requests.map(request => (
-                  <RenterViewRequestRow request={request}/>
-                ))}
+                {requests.map(request => {
+                  if(request[0].requestStatus === 1 ){
+                    return <RenterViewRequestRow request={request}/>;
+                  }
+                })}
 
             </tbody>
         </Table>

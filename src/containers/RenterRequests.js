@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { API } from "aws-amplify";
 import "./RenterRequests.css";
-import RequestRow from "../components/RequestRow";
-// const rows = []
+import RenterViewRequestRow from "../components/RenterViewRequestRow";
+//Renter Requests
 
 export default function RenterRequests() {
   const [requests, setRequests] = useState([]);
   
   useEffect(() => {
     async function getRequests() {
-      return API.get('phlox', '/lender-requests');
+      return API.get('phlox', '/renter-requests');
     }
+
 
     async function fetchTitle(listingId){
       let req = await API.get("phlox", `/listing/${listingId}`)
@@ -32,12 +33,16 @@ export default function RenterRequests() {
       return listing_info;
     }
 
-
     async function onLoad() {
       try {
+        // const requestList = await getRequests();
+        // // requests = requestList;
+        // console.log(requestList);
+        // setRequests(requestList);
+
         const requestList = await getRequests();
+        console.log(requestList);
         const info = await fetchRequestTitle(requestList);
-        console.log(info);
         setRequests(info);
       } catch (e) {
         // console.alert(e);
@@ -50,13 +55,13 @@ export default function RenterRequests() {
   return (
     <div className="RenterRequests">
       <div className="lander">
-        <h1>Rent Requests</h1>
+        <h1>Renter Requests</h1>
 
         <Table responsive>
             <thead>
                 <tr>
                 <th>Title</th>
-                <th>Renter</th>
+                <th>Lender</th>
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Rate</th>
@@ -66,10 +71,16 @@ export default function RenterRequests() {
                 </tr>
             </thead>
             <tbody>
+                {/* {requests.forEach(request => {
+                  rows.push(<RequestRow request={request}/>)
+                })};
+                {
+                  rows
+                } */}
 
-                {requests.map(request => {
-                  return <RequestRow request={request}/>
-                  })}
+                {requests.map(request => (
+                  <RenterViewRequestRow request={request}/>
+                ))}
 
             </tbody>
         </Table>
