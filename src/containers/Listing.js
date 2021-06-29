@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { onError } from '../libs/errorLib';
 import { API, Auth } from 'aws-amplify';
 import { useParams, useHistory } from "react-router-dom";
-import {Container,Image, Row, Col, Card, Form, Button,CardColumns } from "react-bootstrap";
+import {Container,Image, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { Storage } from 'aws-amplify';
 import Sidebar from "../components/SideBar.js";
+import { isReservationValid } from '../libs/resValidityLib';
 import '../components/SideBar.css';
+import { start } from '@popperjs/core';
 
 
 export default function Listing() {
@@ -15,7 +17,7 @@ export default function Listing() {
     const [description, setDescription] = useState("N/a");
     const [policy, setPolicy] = useState("N/a");
     const [imageUrl, setImageUrl] = useState(null);
-    const [listingId, setListingId] = useState("N/a");
+    const [listingId, setListingId] = useState(null);
     const [userId, setUserId] = useState("N/a");
     const [category, setCategory] = useState("N/a");
     const tomorrow = new Date()
@@ -29,23 +31,18 @@ export default function Listing() {
     const [authorId, setAuthorId] = useState(false);
     const [address, setAddress] = useState("N/a");
     const [phoneNumber, setPhoneNumber] = useState("N/a");
-
-    function availableDate() {
-        return true;
-    }
+    const [currentReservations, setCurrentReservations] = useState([]);
+    const [valid, setValid] = useState(true);
 
     function validateRentRequest() {
-        const tempstartDate = new Date(startDate);
-        const tempendDate = new Date(endDate);
+        const newValid = isReservationValid(startDate, endDate, currentReservations);
 
-        return (
-            tempstartDate >= Date.now() &&
-            tempendDate >= Date.now() &&
-            tempendDate >= tempstartDate &&
-            availableDate()
-        );
+        if (newValid !== valid) {
+            setValid(newValid);
+        }
+
+        return newValid;
     }
-
 
     async function removeListing() {
         const answer = confirm("Are you sure you want to remove this listing?");
@@ -53,6 +50,7 @@ export default function Listing() {
         if (answer) {
             try {
                 await API.del('phlox', `/listing/${listingId}`);
+                alert('Listing removed!');
                 history.push('/');
             } catch (e) {
                 onError(e);
@@ -69,6 +67,7 @@ export default function Listing() {
           await createRequest({ listingId, listingAuthorId: userId, rate: 0, archived: false, startDate, endDate, comment, phoneNumber: attributes.phone_number, 
             firstName: attributes.name, lastName: attributes.family_name});
           alert('Request created!');
+          history.push('/renterrequests');
         } catch (e) {
           onError(e);
         }
@@ -84,6 +83,10 @@ export default function Listing() {
     useEffect(() => {
         function loadListing() {
           return API.get("phlox", `/listing/${id}`);
+        }
+
+        function loadReservations(id) {
+            return API.get('phlox', `/approved-reservations/${id}`);
         }
 
         async function loadImage(filename) {
@@ -106,11 +109,14 @@ export default function Listing() {
             setListingId(listingId);
             setUserId(userId);
             setCategory(category);
+
             setImageUrl(await loadImage(imageUrl));
             setAuthor(`${firstName} ${lastName}`);
             setAddress(address);
             setPhoneNumber(phoneNumber);
             setAuthorId(userId === await loadCognitoId());
+            const reservations = await loadReservations(listingId);
+            setCurrentReservations(reservations);
           } catch (e) {
             onError(e);
           }
@@ -146,6 +152,7 @@ export default function Listing() {
                 </div>
                 { authorId ? <Button block size="lg" type="button" onClick={removeListing}>Remove Listing</Button> : 
                     <Form onSubmit={handleSubmit}>
+                    { !valid ? <Alert variant="warning">The requested date range collides with existing reservations.</Alert> : <></> }
                     <Form.Group size="lg" controlId="startDate">
                         <Form.Label>Check In</Form.Label>
                         <Form.Control

@@ -4,9 +4,7 @@ import { useAppContext } from "../libs/contextLib";
 import { onError } from "../libs/errorLib";
 import "./Home.css";
 import { API } from "aws-amplify";
-import { BsPencilSquare } from "react-icons/bs";
-import { LinkContainer } from "react-router-bootstrap";
-import {Container, Row, Col, Card, Form, Button,CardColumns } from "react-bootstrap";
+import {Container, Row, Col, Card, Button} from "react-bootstrap";
 import { withRouter } from "react-router";
 import Sidebar from "../components/SideBar.js";
 import '../components/SideBar.css';
@@ -98,7 +96,6 @@ function renderLander() {
                 </Col>
             </Row>
         </Container>
-
     );
   }
 

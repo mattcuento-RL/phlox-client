@@ -49,8 +49,8 @@ export default function LenderViewRequestRow({request}) {
     }
     
     function updateListing(requestStatus, archived = true){
-        return API.put('phlox', `/request/${request.requestId}`, {
-            body: {requestStatus, userId: request.userId, archived}
+        return API.put('phlox', `/request/${request[0].requestId}`, {
+            body: {requestStatus, userId: request[0].userId, archived}
         })
     }
 
