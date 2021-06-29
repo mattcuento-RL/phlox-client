@@ -9,6 +9,7 @@ import NewNote from "./containers/NewNote";
 import Listing from "./containers/Listing";
 import CreateListing from "./containers/CreateListing";
 import RenterRequests from "./containers/RenterRequests";
+import MyRequests from "./containers/MyRequests";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 
@@ -38,6 +39,9 @@ export default function Routes() {
       </Route>
       <AuthenticatedRoute exact path="/renterrequests">
         <RenterRequests />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/myrequests">
+        <MyRequests />
       </AuthenticatedRoute>
       <Route>
         <NotFound />
