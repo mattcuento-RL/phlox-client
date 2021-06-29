@@ -3,7 +3,7 @@ import Table from "react-bootstrap/Table";
 import { API } from "aws-amplify";
 import "./MyRequests.css";
 import RenterViewRequestRow from "../components/RenterViewRequestRow";
-// const rows = []
+
 
 export default function MyRequests() {
   const [requests, setRequests] = useState([]);

@@ -13,12 +13,32 @@ export default function RenterRequests() {
       return API.get('phlox', '/lender-requests');
     }
 
+    async function fetchTitle(listingId){
+      let req = await API.get("phlox", `/listing/${listingId}`)
+      return req.title;
+    }
+
+    async function fetchRequestTitle(reqs){
+      let listing_info= [];
+  
+      var res = await Promise.all(reqs.map((req)=> {
+          return fetchTitle(req.listingId);
+      }))
+  
+      reqs.map((req,i)=>{   
+          listing_info.push([req,res[i]]);
+      });  
+      // console.log(listing_info);
+      return listing_info;
+    }
+
 
     async function onLoad() {
       try {
         const requestList = await getRequests();
-        setRequests(requestList);
-        console.log(requests);
+        console.log(requestList);
+        const info = await fetchRequestTitle(requestList);
+        setRequests(info);
       } catch (e) {
         // console.alert(e);
       }
@@ -53,9 +73,9 @@ export default function RenterRequests() {
                   rows
                 } */}
 
-                {requests.map(request => (
+                {/* {requests.map(request => (
                   <RequestRow request={request}/>
-                ))}
+                ))} */}
 
             </tbody>
         </Table>

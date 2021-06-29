@@ -7,25 +7,47 @@ import RenterViewRequestRow from "../components/RenterViewRequestRow";
 
 export default function MyReservations() {
   const [requests, setRequests] = useState([]);
+  const [titles, setTitles] = useState([]);
   
   useEffect(() => {
     async function getRequests() {
       return API.get('phlox', '/renter-requests');
     }
 
+    async function fetchTitle(listingId){
+      let req = await API.get("phlox", `/listing/${listingId}`)
+      return req.title;
+    }
+
+    async function fetchRequestTitle(reqs){
+      let listing_info= [];
+  
+      var res = await Promise.all(reqs.map((req)=> {
+          return fetchTitle(req.listingId);
+      }))
+  
+      reqs.map((req,i)=>{   
+          listing_info.push([req,res[i]]);
+      });  
+      return listing_info;
+    }
+
 
     async function onLoad() {
       try {
         const requestList = await getRequests();
-        setRequests(requestList);
-        // console.log(requestList);
+        const info = await fetchRequestTitle(requestList);
+        setRequests(info);
       } catch (e) {
-        // console.alert(e);
+        console.alert(e);
       }
     }
 
     onLoad();
   }, []);
+
+
+
 
 
   return (
@@ -48,9 +70,8 @@ export default function MyReservations() {
             </thead>
             <tbody>
 
-
                 {requests.map(request => {
-                  if(request.requestStatus === 1 ){
+                  if(request[0].requestStatus === 1 ){
                     return <RenterViewRequestRow request={request}/>;
                   }
                 })}
