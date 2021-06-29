@@ -19,7 +19,7 @@ async function fetchRequesterName(userId){
 
 }
 
-export default function RequestRow({request}) {
+export default function LenderViewRequestRow({request}) {
     async function approve(){
         try{
             await updateListing(1);
@@ -49,8 +49,8 @@ export default function RequestRow({request}) {
     }
     
     function updateListing(requestStatus, archived = true){
-        return API.put('phlox', `/request/${request.requestId}`, {
-            body: {requestStatus, userId: request.userId, archived}
+        return API.put('phlox', `/request/${request[0].requestId}`, {
+            body: {requestStatus, userId: request[0].userId, archived}
         })
     }
 
@@ -58,19 +58,18 @@ export default function RequestRow({request}) {
     // console.log(fetchRequesterName(request.userId))
   return (
     <tr>
-    {/* <td> {fetchRequestTitle( request.listingId ) }</td> */}
-    <td> { request.listingId }</td>
-    <td> { request.userId } </td>
-    <td>{ request.startDate }</td>
-    <td> { request.endDate }</td>
-    <td>{ request.rate } </td>
-    <td> { STATUS[request.requestStatus] }</td>
-    <td> { request.comment }</td>
+    <td> { request[1] }</td>
+    <td> { request[0].userId } </td>
+    <td>{ request[0].startDate }</td>
+    <td> { request[0].endDate }</td>
+    <td>{ request[0].rate } </td>
+    <td> { STATUS[request[0].requestStatus] }</td>
+    <td> { request[0].comment }</td>
     <td>
-        <Button onClick={approve} variant="outline-primary" size="sm" disabled = { STATUS[request.requestStatus] != 'PENDING' }>Approve</Button> 
-        <Button onClick={deny} variant="outline-primary" size="sm" disabled = { STATUS[request.requestStatus] != 'PENDING' }>Deny</Button>
-        <Button onClick={cancel} variant="outline-primary" size="sm" disabled = { STATUS[request.requestStatus] == 'PENDING' || STATUS[request.requestStatus] == 'CANCELED' }>Cancel</Button>
-        <Button href={"/listing/"+ request.listingId} variant="outline-primary" size="sm">View Listing</Button>
+        <Button onClick={approve} variant="outline-primary" size="sm" disabled = { STATUS[request[0].requestStatus] != 'PENDING' }>Approve</Button> 
+        <Button onClick={deny} variant="outline-primary" size="sm" disabled = { STATUS[request[0].requestStatus] != 'PENDING' }>Deny</Button>
+        <Button onClick={cancel} variant="outline-primary" size="sm" disabled = { STATUS[request[0].requestStatus] == 'PENDING' || STATUS[request[0].requestStatus] == 'CANCELED' }>Cancel</Button>
+        <Button href={"/listing/"+ request[0].listingId} variant="outline-primary" size="sm">View Listing</Button>
     </td>
     </tr>
    )

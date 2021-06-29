@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
-import {Container, Row, Col, Card, Form, Table, Button,CardColumns } from "react-bootstrap";
+import {Container, Row, Col, Card, Table, Form, Button,CardColumns } from "react-bootstrap";
 import { API } from "aws-amplify";
 import "./RenterRequests.css";
 import RenterViewRequestRow from "../components/RenterViewRequestRow";
 import Sidebar from "../components/SideBar.js";
 import '../components/SideBar.css';
-//Renter Requests
+// const rows = []
 
-export default function RenterRequests() {
+export default function RenterReservations() {
   const [requests, setRequests] = useState([]);
+  const [titles, setTitles] = useState([]);
   
   useEffect(() => {
     async function getRequests() {
       return API.get('phlox', '/renter-requests');
     }
-
 
     async function fetchTitle(listingId){
       let req = await API.get("phlox", `/listing/${listingId}`)
@@ -31,30 +31,30 @@ export default function RenterRequests() {
       reqs.map((req,i)=>{   
           listing_info.push([req,res[i]]);
       });  
-      // console.log(listing_info);
       return listing_info;
     }
 
+
     async function onLoad() {
       try {
-        // const requestList = await getRequests();
-        // // requests = requestList;
-        // console.log(requestList);
-        // setRequests(requestList);
-
         const requestList = await getRequests();
-        console.log(requestList);
         const info = await fetchRequestTitle(requestList);
+        console.log(info);
         setRequests(info);
       } catch (e) {
-        // console.alert(e);
+        console.alert(e);
       }
     }
 
     onLoad();
   }, []);
 
+
+
+
+
   return (
+    
     <Container fluid>
       <Row>
           <Col lg={2} id="sidebar-wrapper" style={{marginTop: '.5rem' }}>      
@@ -63,7 +63,7 @@ export default function RenterRequests() {
           <Col>
           <div className="RenterRequests">
             <div className="lander">
-              <h1>Renter Requests</h1>
+              <h1>Renter Reservations</h1>
 
               <Table responsive>
                   <thead>
@@ -79,25 +79,18 @@ export default function RenterRequests() {
                       </tr>
                   </thead>
                   <tbody>
-                      {/* {requests.forEach(request => {
-                        rows.push(<RequestRow request={request}/>)
-                      })};
-                      {
-                        rows
-                      } */}
-
-                      {requests.map(request => (
-                        <RenterViewRequestRow request={request}/>
-                      ))}
-
+                      {requests.map(request => {
+                        if(request[0].requestStatus === 1 ){
+                          return <RenterViewRequestRow request={request}/>;
+                        }
+                      })}
                   </tbody>
               </Table>
-
             </div>
           </div>
           </Col>
       </Row>
   </Container>
-    
+
   );
 }

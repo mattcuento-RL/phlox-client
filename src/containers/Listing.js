@@ -47,6 +47,7 @@ export default function Listing() {
         if (answer) {
             try {
                 await API.del('phlox', `/listing/${listingId}`);
+                alert('Listing removed!');
                 history.push('/');
             } catch (e) {
                 onError(e);
@@ -61,6 +62,7 @@ export default function Listing() {
         try {      
           await createRequest({ listingId, listingAuthorId: userId, rate: 0, archived: false, startDate, endDate, comment});
           alert('Request created!');
+          history.push('/renterrequests');
         } catch (e) {
           onError(e);
         }

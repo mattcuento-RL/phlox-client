@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useHistory } from 'react-router-dom';
 import {Container, Row, Col, Card, Form, Button,CardColumns } from "react-bootstrap";
 import { API } from "aws-amplify";
 import { s3Upload } from "../libs/awsLib";
@@ -8,7 +9,10 @@ import "./CreateListing.css";
 import Sidebar from "../components/SideBar.js";
 import '../components/SideBar.css';
 
+const categories = ["SKIING", "SNOWBOARDING", "GOLF", "CLIMBING", "CYCLING", "MOUNTAIN_BIKING", "RUNNING", "WAKEBOARDING", "WATER_SKIING", "RACKET_SPORTS", "OTHER"];
+
 export default function CreateListing() {
+  const history = useHistory();
         
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
@@ -44,6 +48,7 @@ export default function CreateListing() {
   
       await createListing({ title, category, description, policy, imageUrl });
       alert('New listing created!');
+      history.push("/lenderlistings");
     } catch (e) {
       onError(e);
       setIsLoading(false);
