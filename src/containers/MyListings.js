@@ -3,10 +3,12 @@ import { useAppContext } from "../libs/contextLib";
 import { onError } from "../libs/errorLib";
 import "./Home.css";
 import { API } from "aws-amplify";
-import {Container, Row, Col, Card, Button} from "react-bootstrap";
+import {Container, Row, Col, Card, Button, CardColumns} from "react-bootstrap";
 import { withRouter } from "react-router";
 import Sidebar from "../components/SideBar.js";
 import '../components/SideBar.css';
+import '../containers/HomePage.css';
+
 import {Storage} from "aws-amplify";
 
 const LenderList = props => {
@@ -70,11 +72,11 @@ function renderLander() {
 
     const items = cards.map(function(card){
         return( 
-            <Card style={{ width: '26rem', height: 'min-content', margin: '.5rem' }}>
+            <Card className="p-2">
             <Card.Body>
                 <Card.Title style={{textAlign:'center'}}>{card[0]}</Card.Title>
-                <Card.Img variant="top" src={card[2]} />
-                <div class="text-center">
+                <Card.Img variant="top" src={card[2]} className="p-2 card-image-top"/>
+                <div class="text-center p-2">
                 <Button href={"/listing/"+ card[1]} variant="primary">View Details</Button>
                 </div>
             </Card.Body>
@@ -92,9 +94,9 @@ function renderLander() {
                   <div className="lander">
                       <h1>My Listings</h1>
                   </div>
-                    <Row>
+                    <CardColumns>
                       {items}                     
-                    </Row>
+                    </CardColumns>
                 </Col>
             </Row>
         </Container>
