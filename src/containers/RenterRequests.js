@@ -36,8 +36,8 @@ export default function RenterRequests() {
     async function onLoad() {
       try {
         const requestList = await getRequests();
-        console.log(requestList);
         const info = await fetchRequestTitle(requestList);
+        console.log(info);
         setRequests(info);
       } catch (e) {
         // console.alert(e);
@@ -66,16 +66,10 @@ export default function RenterRequests() {
                 </tr>
             </thead>
             <tbody>
-                {/* {requests.forEach(request => {
-                  rows.push(<RequestRow request={request}/>)
-                })};
-                {
-                  rows
-                } */}
 
-                {/* {requests.map(request => (
-                  <RequestRow request={request}/>
-                ))} */}
+                {requests.map(request => {
+                  return <RequestRow request={request}/>
+                  })}
 
             </tbody>
         </Table>

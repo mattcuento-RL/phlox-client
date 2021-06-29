@@ -37,6 +37,7 @@ export default function MyReservations() {
       try {
         const requestList = await getRequests();
         const info = await fetchRequestTitle(requestList);
+        console.log(info);
         setRequests(info);
       } catch (e) {
         console.alert(e);
