@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
+import {Container, Row, Col, Card, Table, Form, Button,CardColumns } from "react-bootstrap";
 import { API } from "aws-amplify";
 import "./RenterRequests.css";
 import RenterViewRequestRow from "../components/RenterViewRequestRow";
+import Sidebar from "../components/SideBar.js";
+import '../components/SideBar.css';
 // const rows = []
 
 export default function RenterReservations() {
@@ -52,35 +54,43 @@ export default function RenterReservations() {
 
 
   return (
-    <div className="RenterRequests">
-      <div className="lander">
-        <h1>Renter Reservations</h1>
+    
+    <Container fluid>
+      <Row>
+          <Col lg={2} id="sidebar-wrapper" style={{marginTop: '.5rem' }}>      
+          <Sidebar />
+          </Col>
+          <Col>
+          <div className="RenterRequests">
+            <div className="lander">
+              <h1>Renter Reservations</h1>
 
-        <Table responsive>
-            <thead>
-                <tr>
-                <th>Title</th>
-                <th>Lender</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Rate</th>
-                <th>Status</th>
-                <th>Comments</th>
-                <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
+              <Table responsive>
+                  <thead>
+                      <tr>
+                      <th>Title</th>
+                      <th>Lender</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Rate</th>
+                      <th>Status</th>
+                      <th>Comments</th>
+                      <th>Actions</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {requests.map(request => {
+                        if(request[0].requestStatus === 1 ){
+                          return <RenterViewRequestRow request={request}/>;
+                        }
+                      })}
+                  </tbody>
+              </Table>
+            </div>
+          </div>
+          </Col>
+      </Row>
+  </Container>
 
-                {requests.map(request => {
-                  if(request[0].requestStatus === 1 ){
-                    return <RenterViewRequestRow request={request}/>;
-                  }
-                })}
-
-            </tbody>
-        </Table>
-
-      </div>
-    </div>
   );
 }

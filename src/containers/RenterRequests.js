@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
+import {Container, Row, Col, Card, Form, Table, Button,CardColumns } from "react-bootstrap";
 import { API } from "aws-amplify";
 import "./RenterRequests.css";
 import RenterViewRequestRow from "../components/RenterViewRequestRow";
+import Sidebar from "../components/SideBar.js";
+import '../components/SideBar.css';
 //Renter Requests
 
 export default function RenterRequests() {
@@ -53,39 +55,49 @@ export default function RenterRequests() {
   }, []);
 
   return (
-    <div className="RenterRequests">
-      <div className="lander">
-        <h1>Renter Requests</h1>
+    <Container fluid>
+      <Row>
+          <Col lg={2} id="sidebar-wrapper" style={{marginTop: '.5rem' }}>      
+          <Sidebar />
+          </Col>
+          <Col>
+          <div className="RenterRequests">
+            <div className="lander">
+              <h1>Renter Requests</h1>
 
-        <Table responsive>
-            <thead>
-                <tr>
-                <th>Title</th>
-                <th>Lender</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Rate</th>
-                <th>Status</th>
-                <th>Comments</th>
-                <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {/* {requests.forEach(request => {
-                  rows.push(<RequestRow request={request}/>)
-                })};
-                {
-                  rows
-                } */}
+              <Table responsive>
+                  <thead>
+                      <tr>
+                      <th>Title</th>
+                      <th>Lender</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Rate</th>
+                      <th>Status</th>
+                      <th>Comments</th>
+                      <th>Actions</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {/* {requests.forEach(request => {
+                        rows.push(<RequestRow request={request}/>)
+                      })};
+                      {
+                        rows
+                      } */}
 
-                {requests.map(request => (
-                  <RenterViewRequestRow request={request}/>
-                ))}
+                      {requests.map(request => (
+                        <RenterViewRequestRow request={request}/>
+                      ))}
 
-            </tbody>
-        </Table>
+                  </tbody>
+              </Table>
 
-      </div>
-    </div>
+            </div>
+          </div>
+          </Col>
+      </Row>
+  </Container>
+    
   );
 }
