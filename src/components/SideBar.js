@@ -15,10 +15,10 @@ const Side = props => {
             <div className="sidebar-sticky"></div>
             <div className="title">Renter</div>
             <Nav.Item>
-                <Nav.Link href="/homepage">Reservations</Nav.Link>
+                <Nav.Link href="/renterreservations">Reservations</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link href="/login">Requests</Nav.Link>
+                <Nav.Link href="/renterrequests">Requests</Nav.Link>
             </Nav.Item>
 
             <div className="title">Lender</div>
@@ -29,7 +29,7 @@ const Side = props => {
                 <Nav.Link href="/lenderlistings">View Listings</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link href="/login">Incoming Requests</Nav.Link>
+                <Nav.Link href="/lenderrequests">Incoming Requests</Nav.Link>
             </Nav.Item>
             </Nav>   
         </>

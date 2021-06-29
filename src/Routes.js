@@ -8,6 +8,9 @@ import Signup from "./containers/Signup";
 import NewNote from "./containers/NewNote";
 import Listing from "./containers/Listing";
 import CreateListing from "./containers/CreateListing";
+import LenderRequests from "./containers/LenderRequests";
+import RenterRequests from "./containers/RenterRequests";
+import RenterReservations from "./containers/RenterReservations";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import MyListings from "./containers/MyListings";
@@ -38,6 +41,15 @@ export default function Routes() {
       <Route exact path="/homepage">
         <HomePage />
       </Route>
+      <AuthenticatedRoute exact path="/lenderrequests">
+        <LenderRequests />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/renterrequests">
+        <RenterRequests />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/renterreservations">
+        <RenterReservations />
+      </AuthenticatedRoute>
       <Route>
         <NotFound />
       </Route>
