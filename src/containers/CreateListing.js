@@ -9,6 +9,8 @@ import "./CreateListing.css";
 import Sidebar from "../components/SideBar.js";
 import '../components/SideBar.css';
 
+const categories = ["SKIING", "SNOWBOARDING", "GOLF", "CLIMBING", "CYCLING", "MOUNTAIN_BIKING", "RUNNING", "WAKEBOARDING", "WATER_SKIING", "RACKET_SPORTS", "OTHER"];
+
 export default function CreateListing() {
   const history = useHistory();
         
