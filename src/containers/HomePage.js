@@ -4,7 +4,7 @@ import { useAppContext } from "../libs/contextLib";
 import { onError } from "../libs/errorLib";
 import "./Home.css";
 import { API } from "aws-amplify";
-import {Container, Row, Col, Card, Button} from "react-bootstrap";
+import {Container, Row, Col, Card, Button, Form} from "react-bootstrap";
 import { withRouter } from "react-router";
 import Sidebar from "../components/SideBar.js";
 import '../components/SideBar.css';
@@ -16,6 +16,10 @@ const Dash = props => {
     const [listings, setListings] = useState([]);
     const { isAuthenticated } = useAppContext(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [filteredCards, setFilteredCards] = useState([]);
+    const [filter, setFilter] = useState("All");
+    const [search, setSearch] = useState("");
+
 
     useEffect(() => {
     async function onLoad() {
@@ -27,6 +31,7 @@ const Dash = props => {
         const cards = await loadCards(listings);
         setListings(listings)
         setCards(cards);
+        setFilteredCards(cards);
       } catch (e) {
         onError(e);
       }
@@ -51,10 +56,29 @@ const Dash = props => {
     }))
 
     listings.map((listing,i)=>{   
-        listing_info.push([listing.title,listing.listingId,res[i]]);
+        listing_info.push([listing.title,listing.listingId,res[i], listing.category]);
     });  
 
     return listing_info;
+  }
+
+  const handleSearch = () => {
+    event.preventDefault();
+    
+    let result = [];
+
+    result = cards.filter((card) => {
+      if (filter === 'All') {
+        return card[0].toLowerCase().search(search) != -1;
+      } else {
+        if (filter === card[3]) {
+          return card[0].toLowerCase().search(search) != -1;
+        } else {
+          return false;
+        }
+      }
+    });
+    setFilteredCards(result);
   }
 
 
@@ -69,7 +93,7 @@ function renderLander() {
 
   function renderDashboard() {
 
-    const items = cards.map(function(card){
+    const items = filteredCards.map(function(card){
         return( 
             <Card style={{ width: '26rem', height: 'min-content', margin: '.5rem' }}>
             <Card.Body>
@@ -90,6 +114,39 @@ function renderLander() {
                 <Sidebar />
                 </Col>
                 <Col>
+                      <Form className="w-100 px-3 row" onSubmit={handleSearch}>
+                      <div className="col-md-3">
+                      <Form.Group size="lg" controlId="search">
+                          <Form.Control
+                              as="select"
+                              placeholder="Filter By..."
+                              onChange={(event) => setFilter(event.target.value)}
+                          >
+                            <option>All</option>
+                            <option>Skiing</option>
+                            <option>Snowboarding</option>
+                            <option>Golf</option>
+                            <option>Climbing</option>
+                            <option>Cycling</option>
+                            <option>Mountain Biking</option>
+                            <option>Water Sports</option>
+                            <option>Racket Sports</option>
+                          </Form.Control>
+                      </Form.Group>
+                      </div>
+                      <div className="col-md-7">
+                      <Form.Group size="lg" controlId="search">
+                          <Form.Control
+                              type="text"
+                              placeholder="Search"
+                              onChange={(event) => setSearch(event.target.value)}
+                          />
+                      </Form.Group>
+                      </div>
+                      <div className="col-md-2">
+                        <Button type="submit">Search</Button>
+                      </div>
+                      </Form>
                     <Row>
                       {items}                     
                     </Row>

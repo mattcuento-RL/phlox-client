@@ -97,6 +97,7 @@ export default function CreateListing() {
             <option>Mountain Biking</option>
             <option>Running</option>
             <option>Water Sports</option>
+            <option>Racket Sports</option>
             <option>Other</option>
           </Form.Control>
         </Form.Group>
