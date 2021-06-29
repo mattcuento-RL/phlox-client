@@ -13,7 +13,7 @@ import MyRequests from "./containers/MyRequests";
 import MyReservations from "./containers/MyReservations";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
-
+import MyListings from "./containers/MyListings";
 export default function Routes() {
   return (
     <Switch>
@@ -34,6 +34,9 @@ export default function Routes() {
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/createlisting">
         <CreateListing />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/lenderlistings">
+        <MyListings />
       </AuthenticatedRoute>
       <Route exact path="/homepage">
         <HomePage />
