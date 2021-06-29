@@ -16,7 +16,7 @@ const Side = props => {
             <div className="sidebar-sticky"></div>
             <div className="title">Renter</div>
             <Nav.Item>
-                <Nav.Link href="/renterreservations">Reservations</Nav.Link>
+                <Nav.Link href="/renterreservations">Upcoming Reservations</Nav.Link>
             </Nav.Item>
             <Nav.Item>
                 <Nav.Link href="/renterrequests">Requests</Nav.Link>
