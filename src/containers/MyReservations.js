@@ -18,7 +18,7 @@ export default function MyReservations() {
       try {
         const requestList = await getRequests();
         setRequests(requestList);
-        console.log(requests);
+        // console.log(requestList);
       } catch (e) {
         // console.alert(e);
       }
@@ -26,6 +26,7 @@ export default function MyReservations() {
 
     onLoad();
   }, []);
+
 
   return (
     <div className="MyRequests">
@@ -46,16 +47,13 @@ export default function MyReservations() {
                 </tr>
             </thead>
             <tbody>
-                {/* {requests.forEach(request => {
-                  rows.push(<RequestRow request={request}/>)
-                })};
-                {
-                  rows
-                } */}
 
-                {requests.map(request => (
-                  <RenterViewRequestRow request={request}/>
-                ))}
+
+                {requests.map(request => {
+                  if(request.requestStatus === 1 ){
+                    return <RenterViewRequestRow request={request}/>;
+                  }
+                })}
 
             </tbody>
         </Table>

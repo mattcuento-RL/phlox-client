@@ -10,30 +10,33 @@ var STATUS = {
 3: 'CANCELED'
 };
 
-async function fetchRequestTitle(listingId){
-    let req = await API.get("phlox", `/listing/${listingId}`)
-    return req.title;
-}
+// async function fetchRequestTitle(listingId){
+//     let req = await API.get("phlox", `/listing/${listingId}`)
+//     console.log(req);
+//     return req.title;
+// }
 
-async function fetchRequesterName(userId){
+// async function fetchRequesterName(userId){
 
-}
+// }
 
 export default function RenterViewRequestRow({request}) {
-  async function cancel(){
-    try{
-        await updateListing(3);
-        alert("successfully updated status")
-    }catch(e){
-        onError(e)
-    }
-  }
+  
+  // async function cancel(){
+  //   try{
+  //       await updateListing(3);
+  //       alert("successfully updated status")
+  //   }catch(e){
+  //       onError(e)
+  //   }
+  // }
 
-  function updateListing(requestStatus, archived = true){
-    return API.put('phlox', `/request/${request.requestId}`, {
-        body: {requestStatus, userId: request.userId, archived}
-    })
-  }
+  // function updateListing(requestStatus, archived = true){
+
+  //   return API.put('phlox', `/request/${request.requestId}`, {
+  //       body: {requestStatus, userId: request.userId, archived}
+  //   })
+  // }
     // console.log(fetchRequestTitle(request.listingId))
     // console.log(fetchRequesterName(request.userId))
   return (
