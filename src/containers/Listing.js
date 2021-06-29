@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { onError } from '../libs/errorLib';
 import { API, Auth } from 'aws-amplify';
 import { useParams, useHistory } from "react-router-dom";
-import {Container,Image, Row, Col, Card, Form, Button,CardColumns } from "react-bootstrap";
+import {Container,Image, Row, Col, Form, Button} from "react-bootstrap";
 import { Storage } from 'aws-amplify';
 import Sidebar from "../components/SideBar.js";
 import '../components/SideBar.css';

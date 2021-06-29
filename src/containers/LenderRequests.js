@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
+import {Container, Row, Col, Card, Table} from "react-bootstrap";
 import { API } from "aws-amplify";
 import "./LenderRequests.css";
 import LenderViewRequestRow from "../components/LenderViewRequestRow";
-// const rows = []
+import Sidebar from "../components/SideBar.js";
+import '../components/SideBar.css';
 
 export default function LenderRequests() {
   const [requests, setRequests] = useState([]);
@@ -48,33 +49,44 @@ export default function LenderRequests() {
   }, []);
 
   return (
-    <div className="LenderRequests">
-      <div className="lander">
-        <h1>Lender Requests</h1>
 
-        <Table responsive>
-            <thead>
-                <tr>
-                <th>Title</th>
-                <th>Renter</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Rate</th>
-                <th>Status</th>
-                <th>Comments</th>
-                <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
+    <Container fluid>
+            <Row>
+                <Col lg={2} id="sidebar-wrapper" style={{marginTop: '.5rem' }}>      
+                <Sidebar />
+                </Col>
+                <Col>
+                <div className="LenderRequests">
+                  <div className="lander">
+                    <h1>Lender Requests</h1>
 
-                {requests.map(request => {
-                  return <LenderViewRequestRow request={request}/>
-                  })}
+                    <Table responsive>
+                        <thead>
+                            <tr>
+                            <th>Title</th>
+                            <th>Renter</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Rate</th>
+                            <th>Status</th>
+                            <th>Comments</th>
+                            <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-            </tbody>
-        </Table>
+                            {requests.map(request => {
+                              return <LenderViewRequestRow request={request}/>
+                              })}
 
-      </div>
-    </div>
+                        </tbody>
+                    </Table>
+
+                  </div>
+                </div>
+                </Col>
+            </Row>
+        </Container>
+
   );
 }
