@@ -18,7 +18,7 @@ const Side = props => {
                 <Nav.Link href="/myreservations">Reservations</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link href="/myrequests">Requests</Nav.Link>
+                <Nav.Link href="/renterrequests">Requests</Nav.Link>
             </Nav.Item>
 
             <div className="title">Lender</div>
@@ -29,7 +29,7 @@ const Side = props => {
                 <Nav.Link href="/login">View Listings</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link href="/renterrequests">Incoming Requests</Nav.Link>
+                <Nav.Link href="/lenderrequests">Incoming Requests</Nav.Link>
             </Nav.Item>
             </Nav>   
         </>
