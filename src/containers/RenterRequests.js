@@ -18,7 +18,7 @@ export default function RenterRequests() {
 
     async function fetchTitle(listingId){
       let req = await API.get("phlox", `/listing/${listingId}`)
-      return req.title;
+      return [req.title, req.firstName, req.lastName, req.phoneNumber];
     }
 
     async function fetchRequestTitle(reqs){
@@ -68,11 +68,10 @@ export default function RenterRequests() {
               <Table responsive>
                   <thead>
                       <tr>
-                      <th>Title</th>
+                      <th>Item</th>
                       <th>Lender</th>
                       <th>Start Date</th>
                       <th>End Date</th>
-                      <th>Rate</th>
                       <th>Status</th>
                       <th>Comments</th>
                       <th>Actions</th>

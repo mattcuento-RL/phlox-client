@@ -89,6 +89,9 @@ function renderLander() {
                 <Sidebar />
                 </Col>
                 <Col>
+                  <div className="lander">
+                      <h1>My Listings</h1>
+                  </div>
                     <Row>
                       {items}                     
                     </Row>
