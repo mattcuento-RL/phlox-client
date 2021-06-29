@@ -51,6 +51,7 @@ export default function Notes() {
   
   function handleFileChange(event) {
     file.current = event.target.files[0];
+    setFile(file.current.name);
   }
   
   function saveNote(note) {

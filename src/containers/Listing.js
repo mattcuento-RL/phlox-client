@@ -8,6 +8,7 @@ import Sidebar from "../components/SideBar.js";
 import { isReservationValid } from '../libs/resValidityLib';
 import '../components/SideBar.css';
 import { start } from '@popperjs/core';
+import LoaderButton from '../components/LoaderButton';
 
 
 export default function Listing() {
@@ -33,6 +34,7 @@ export default function Listing() {
     const [phoneNumber, setPhoneNumber] = useState("N/a");
     const [currentReservations, setCurrentReservations] = useState([]);
     const [valid, setValid] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     function validateRentRequest() {
         const newValid = isReservationValid(startDate, endDate, currentReservations);
@@ -48,9 +50,10 @@ export default function Listing() {
         const answer = confirm("Are you sure you want to remove this listing?");
 
         if (answer) {
+            setIsLoading(true);
             try {
                 await API.del('phlox', `/listing/${listingId}`);
-                alert('Listing removed!');
+                setIsLoading(false);
                 history.push('/');
             } catch (e) {
                 onError(e);
@@ -61,12 +64,12 @@ export default function Listing() {
 
     async function handleSubmit(event) {
         event.preventDefault();
-      
+        setIsLoading(true);
         try {      
           const { attributes } = (await Auth.currentUserInfo());
           await createRequest({ listingId, listingAuthorId: userId, rate: 0, archived: false, startDate, endDate, comment, phoneNumber: attributes.phone_number, 
             firstName: attributes.name, lastName: attributes.family_name});
-          alert('Request created!');
+          setIsLoading(false);
           history.push('/renterrequests');
         } catch (e) {
           onError(e);
@@ -150,7 +153,7 @@ export default function Listing() {
                 <div style={{textAlign:'center'}}>
                 <Image src={imageUrl} fluid/>
                 </div>
-                { authorId ? <Button block size="lg" type="button" onClick={removeListing}>Remove Listing</Button> : 
+                { authorId ? <LoaderButton block size="lg" variant="danger" isLoading={isLoading} type="button" onClick={removeListing}>Remove Listing</LoaderButton> : 
                     <Form onSubmit={handleSubmit}>
                     { !valid ? <Alert variant="warning">The requested date range collides with existing reservations.</Alert> : <></> }
                     <Form.Group size="lg" controlId="startDate">
@@ -177,9 +180,9 @@ export default function Listing() {
                             onChange={(e) => setComment(e.target.value)}
                         />
                     </Form.Group>
-                    <Button block size="lg" type="submit" disabled={!validateRentRequest()}>
+                    <LoaderButton block size="lg" type="submit" isLoading={isLoading} disabled={!validateRentRequest()}>
                         Rent
-                    </Button>
+                    </LoaderButton>
                   </Form>}
                 </Col>
                   </Row>
