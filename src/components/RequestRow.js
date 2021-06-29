@@ -4,7 +4,7 @@ import { API } from "aws-amplify";
 import { onError } from "../libs/errorLib";
 
 var STATUS = {
-0 : 'PENDING', 
+0: 'PENDING', 
 1: 'APPROVED', 
 2: 'DENIED',
 3: 'CANCELED'
@@ -22,7 +22,7 @@ async function fetchRequesterName(userId){
 export default function RequestRow({request}) {
     async function approve(){
         try{
-            await updateListing(0);
+            await updateListing(1);
             alert("successfully updated status")
         }catch(e){
             onError(e)
@@ -31,7 +31,7 @@ export default function RequestRow({request}) {
     
     async function deny(){
         try{
-            await updateListing(1);
+            await updateListing(2);
             alert("successfully updated status")
         }catch(e){
             onError(e)
@@ -50,7 +50,7 @@ export default function RequestRow({request}) {
     
     function updateListing(requestStatus, archived = true){
         return API.put('phlox', `/request/${request.requestId}`, {
-            body: {requestStatus, archived}
+            body: {requestStatus, userId: request.userId, archived}
         })
     }
 
@@ -67,9 +67,9 @@ export default function RequestRow({request}) {
     <td> { STATUS[request.requestStatus] }</td>
     <td> { request.comment }</td>
     <td>
-        <Button onClick={approve} variant="outline-primary" size="sm" disabled = { STATUS[request.requestStatus] == 'DENIED' || STATUS[request.requestStatus] == 'CANCELED' }>Approve</Button> 
-        <Button onClick={deny} variant="outline-primary" size="sm" disabled = { STATUS[request.requestStatus] == 'APPROVED' || STATUS[request.requestStatus] == 'CANCELED' }>Deny</Button>
-        <Button onClick={cancel} variant="outline-primary" size="sm" disabled = { STATUS[request.requestStatus] == 'PENDING' }>Cancel</Button>
+        <Button onClick={approve} variant="outline-primary" size="sm" disabled = { STATUS[request.requestStatus] != 'PENDING' }>Approve</Button> 
+        <Button onClick={deny} variant="outline-primary" size="sm" disabled = { STATUS[request.requestStatus] != 'PENDING' }>Deny</Button>
+        <Button onClick={cancel} variant="outline-primary" size="sm" disabled = { STATUS[request.requestStatus] == 'PENDING' || STATUS[request.requestStatus] == 'CANCELED' }>Cancel</Button>
         <Button href={"/listing/"+ request.listingId} variant="outline-primary" size="sm">View Listing</Button>
     </td>
     </tr>
